@@ -228,13 +228,11 @@
             let count = parseInt(input_number.value) || 0
             let result = ""
             
-
             if (a == "decode") {
                 count =  -(parseInt(input_number.value) || 0)
             }
 
             for (const x of original.slice()) {
-                console.log(x)
                 result += charToAscii(x, count)
             }
 
