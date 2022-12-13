@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>thomadis - enkripsi deskripsi ascii</title>
+    <style>
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .form-container {
+            margin-bottom: 15px;
+        }
+        .form-container label {
+            display: block;
+        }
+
+        .form-container input,
+        .form-container textarea {
+            width: 320px;
+        }
+
+        .form-container textarea {
+            min-height: 120px;
+        }
+
+        .form-container span {
+            display: block;
+            font-size: 10pt;
+        }
+
+        .detil {
+            margin-top: 30px;
+        }
+
+        .detil table {
+        border-collapse: collapse;
+        width: 100%;
+        }
+
+        .detil table td, .detil table th {
+            border: 1px solid #dddddd;
+            padding: 15px 10px;
+        }
+
+        .detil table tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .detil table tr:hover {
+            background-color: #dddddd;
+        }
+
+        .detil table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #222222;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <label>Teks</label>
+        <textarea id="input_text" placeholder="resutl..."></textarea>
+    </div>
+    <div class="form-container">
+        <label>Berapa</label>
+        <input type="number" value="3" id="input_number">
+        <span>Note: Caesar Enkripsi menggunakan 3</span>
+    </div>
+    <div class="form-container">
+        <label>ASCII Model</label>
+        <input type="number" value="127" id="input_ascii_count">
+        <span>Note: 127 original ascii, 255 extended ascii</span>
+    </div>
+    <div class="form-container">
+        <label>Hasil</label>
+        <textarea id="result" placeholder="resutl..."></textarea>
+    </div>
+    
+    <button class="form-button" onclick="return doAction('encode')">Enkripsi</button>
+    <button class="form-button" onclick="return doAction('decode')">Dekripsi</button>
+
+    <div class="detil">
+        <h3>Detil</h3>
+        <table id="detil">
+        </table>
+    </div>
+    
+    <script>
+        var input_text = document.getElementById("input_text")
+        var input_number = document.getElementById("input_number")
+        var input_ascii_count = document.getElementById("input_ascii_count") || 127
+        var detil = document.getElementById("detil");
+
+        function charToAscii(a, b) {
+            const text = a.charCodeAt(0)
+            const calculate = (text + b) % input_ascii_count.value
+            const result = asciiToChar(calculate)
+            let content = detil.innerHTML
+            content += `<tr><td>${text}</td><td>${a}</td><td>${calculate}</td><td>${result}</td></tr>`
+            detil.innerHTML = content
+            return result
+        }
+
+        function asciiToChar(a) {
+            return String.fromCharCode(a)
+        }
+
+        function setupNewDetil() {
+            detil.innerHTML = "<tr><th>ASCII Teks</th><th>Teks</th><th>ASCII Hasil</th><th>Hasil</th></tr>"
+        }
+
+        function doAction(a) {
+            setupNewDetil()
+            const original = input_text.value
+            let count = parseInt(input_number.value) || 0
+            let result = ""
+            
+
+            if (a == "decode") {
+                count =  -(parseInt(input_number.value) || 0)
+            }
+
+            for (const x of original.slice()) {
+                result += charToAscii(x, count)
+            }
+
+            document.getElementById("result").value = result
+        }
+    </script>
+</body>
+</html>
