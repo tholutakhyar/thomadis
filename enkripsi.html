@@ -164,7 +164,7 @@
                 <div class="form-container">
                     <label>Hasil</label>
                     <textarea id="result" placeholder="hasil..."></textarea>
-                    <span>Note: [NUL], [Space], [DEL] Ubah Yang Lain Waktu Dekripsi!</span>
+                    <span>Note: Kalo ada simbol gk jelas coba cek Table ASCII ya!</span>
                 </div>
                 
                 <div class="form-button-container">
@@ -193,16 +193,24 @@
             const calculate = (text + b) % input_ascii_count.value // add 1 since is start from 0 :)
             
             let result = asciiToChar(calculate)
+            let result_text = result
             if (calculate == 0) {
-                result = "[NUL]"
+                result_text = "[NUL]"
             } else if (calculate == 32) {
-                result = "[Space]"
+                result_text = "[Space]"
             } else if (calculate == 127) {
-                result = "[DEL]"
+                result_text = "[DEL]"
             }
-            let content = detil.innerHTML
-            content += `<tr><td>${text}</td><td>${a}</td><td>${calculate}</td><td>${result}</td></tr>`
-            detil.innerHTML = content
+
+            let a_text = a
+            if (text == 0) {
+                a_text = "[NUL]"
+            } else if (text == 32) {
+                a_text = "[Space]"
+            } else if (text == 127) {
+                a_text = "[DEL]"
+            }
+            detil.innerHTML += `<tr><td>${text}</td><td>${a_text}</td><td>${calculate}</td><td>${result_text}</td></tr>`
             return result
         }
 
@@ -226,6 +234,7 @@
             }
 
             for (const x of original.slice()) {
+                console.log(x)
                 result += charToAscii(x, count)
             }
 
